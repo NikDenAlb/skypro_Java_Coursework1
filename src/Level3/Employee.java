@@ -30,10 +30,6 @@ public class Employee {
         return id;
     }
 
-    public int getCounter() {
-        return counter;
-    }
-
     public void setDepartment(Department department) {
         this.department = department;
     }
