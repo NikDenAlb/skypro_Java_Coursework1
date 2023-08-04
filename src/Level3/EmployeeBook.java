@@ -92,48 +92,22 @@ public class EmployeeBook {
 
     public int[] whoMinimumSalary() {
         int minimumSalary = Integer.MAX_VALUE;
-        int counter = 0;
         for (Employee employee : employeeBook) {
             if (employee != null && minimumSalary > employee.getSalary()) {
                 minimumSalary = employee.getSalary();
             }
         }
-        for (Employee employee : employeeBook) {
-            if (employee != null && minimumSalary == employee.getSalary()) {
-                counter++;
-            }
-        }
-        int[] out = new int[counter];
-        int i = 0;
-        for (Employee employee : employeeBook) {
-            if (employee != null && minimumSalary == employee.getSalary()) {
-                out[i++] = employee.getId();
-            }
-        }
-        return out;
+        return getIdsofParameterSalary(minimumSalary);
     }
 
     public int[] whoMaximumSalary() {
         int maximumSalary = 0;
-        int counter = 0;
         for (Employee employee : employeeBook) {
             if (employee != null && maximumSalary < employee.getSalary()) {
                 maximumSalary = employee.getSalary();
             }
         }
-        for (Employee employee : employeeBook) {
-            if (employee != null && maximumSalary == employee.getSalary()) {
-                counter++;
-            }
-        }
-        int[] out = new int[counter];
-        int i = 0;
-        for (Employee employee : employeeBook) {
-            if (employee != null && maximumSalary == employee.getSalary()) {
-                out[i++] = employee.getId();
-            }
-        }
-        return out;
+        return getIdsofParameterSalary(maximumSalary);
     }
 
     public double averageSalary() {
@@ -166,48 +140,22 @@ public class EmployeeBook {
 
     public int[] whoMinimumDepartmentSalary(Department department) {
         int minimumSalary = Integer.MAX_VALUE;
-        int counter = 0;
         for (Employee employee : employeeBook) {
             if (employee != null && employee.getDepartment() == department && minimumSalary > employee.getSalary()) {
                 minimumSalary = employee.getSalary();
             }
         }
-        for (Employee employee : employeeBook) {
-            if (employee != null && employee.getDepartment() == department && minimumSalary == employee.getSalary()) {
-                counter++;
-            }
-        }
-        int[] out = new int[counter];
-        int i = 0;
-        for (Employee employee : employeeBook) {
-            if (employee != null && employee.getDepartment() == department && minimumSalary == employee.getSalary()) {
-                out[i++] = employee.getId();
-            }
-        }
-        return out;
+        return getIdsofParameterDepartmentSalary(department, minimumSalary);
     }
 
     public int[] whoMaximumDepartmentSalary(Department department) {
         int maximumSalary = 0;
-        int counter = 0;
         for (Employee employee : employeeBook) {
             if (employee != null && employee.getDepartment() == department && maximumSalary < employee.getSalary()) {
                 maximumSalary = employee.getSalary();
             }
         }
-        for (Employee employee : employeeBook) {
-            if (employee != null && employee.getDepartment() == department && maximumSalary == employee.getSalary()) {
-                counter++;
-            }
-        }
-        int[] out = new int[counter];
-        int i = 0;
-        for (Employee employee : employeeBook) {
-            if (employee != null && employee.getDepartment() == department && maximumSalary == employee.getSalary()) {
-                out[i++] = employee.getId();
-            }
-        }
-        return out;
+        return getIdsofParameterDepartmentSalary(department, maximumSalary);
     }
 
     public int totalDepartmentSalary(Department department) {
@@ -240,27 +188,16 @@ public class EmployeeBook {
     }
 
     public void printDepartment(Department department) {
-        String string = null;
-        for (int i = 0; i < employeeBook.length; i++) {
-            if (employeeBook[i] != null && employeeBook[i].getDepartment() == department)
-                if (string == null) {
-                    string = "[" + i + "] " + String.format("%s, зарплата %,dр %02dк, id=%d", employeeBook[i].getFullName(), employeeBook[i].getSalary() / 100, employeeBook[i].getSalary() % 100, employeeBook[i].getId());
-                } else {
-                    string += "\n" + "[" + i + "] " + String.format("%s, зарплата %,dр %02dк, id=%d", employeeBook[i].getFullName(), employeeBook[i].getSalary() / 100, employeeBook[i].getSalary() % 100, employeeBook[i].getId());
-                }
-        }
+        String string = getStringDepartmentStaff(department);
         System.out.println(Objects.requireNonNullElseGet(string, () -> "В отделе " + department + " нет сотрудников"));
     }
 
     public void printAllMoreSalary(int salary) {
         String string = null;
         for (int i = 0; i < employeeBook.length; i++) {
-            if (employeeBook[i] != null && employeeBook[i].getSalary() >= salary)
-                if (string == null) {
-                    string = "[" + i + "] " + String.format("%s, зарплата %,dр %02dк, id=%d", employeeBook[i].getFullName(), employeeBook[i].getSalary() / 100, employeeBook[i].getSalary() % 100, employeeBook[i].getId());
-                } else {
-                    string += "\n" + "[" + i + "] " + String.format("%s, зарплата %,dр %02dк, id=%d", employeeBook[i].getFullName(), employeeBook[i].getSalary() / 100, employeeBook[i].getSalary() % 100, employeeBook[i].getId());
-                }
+            if (employeeBook[i] != null && employeeBook[i].getSalary() >= salary) {
+                string = getStringEmployeeWithoutDepartment(string, i);
+            }
         }
         if (string != null) {
             System.out.println(string);
@@ -273,11 +210,7 @@ public class EmployeeBook {
         String string = null;
         for (int i = 0; i < employeeBook.length; i++) {
             if (employeeBook[i] != null && employeeBook[i].getSalary() < salary)
-                if (string == null) {
-                    string = "[" + i + "] " + String.format("%s, зарплата %,dр %02dк, id=%d", employeeBook[i].getFullName(), employeeBook[i].getSalary() / 100, employeeBook[i].getSalary() % 100, employeeBook[i].getId());
-                } else {
-                    string += "\n" + "[" + i + "] " + String.format("%s, зарплата %,dр %02dк, id=%d", employeeBook[i].getFullName(), employeeBook[i].getSalary() / 100, employeeBook[i].getSalary() % 100, employeeBook[i].getId());
-                }
+                string = getStringEmployeeWithoutDepartment(string, i);
         }
         if (string != null) {
             System.out.println(string);
@@ -329,19 +262,63 @@ public class EmployeeBook {
     public void printAlltDepartments() {
 
         for (Department department : Department.values()) {
-            String string = null;
             System.out.println("Отдел " + department);
 
-            for (int i = 0; i < employeeBook.length; i++) {
-                if (employeeBook[i] != null && employeeBook[i].getDepartment() == department)
-                    if (string == null) {
-                        string = "[" + i + "] " + String.format("%s, зарплата %,dр %02dк, id=%d", employeeBook[i].getFullName(), employeeBook[i].getSalary() / 100, employeeBook[i].getSalary() % 100, employeeBook[i].getId());
-                    } else {
-                        string += "\n" + "[" + i + "] " + String.format("%s, зарплата %,dр %02dк, id=%d", employeeBook[i].getFullName(), employeeBook[i].getSalary() / 100, employeeBook[i].getSalary() % 100, employeeBook[i].getId());
-                    }
-            }
+            String string = getStringDepartmentStaff(department);
             System.out.println(Objects.requireNonNullElse(string, "В отделе нет сотрудников"));
         }
 
+    }
+
+    private int[] getIdsofParameterSalary(int targetSalary) {
+        int counter = 0;
+        for (Employee employee : employeeBook) {
+            if (employee != null && targetSalary == employee.getSalary()) {
+                counter++;
+            }
+        }
+        int[] out = new int[counter];
+        int i = 0;
+        for (Employee employee : employeeBook) {
+            if (employee != null && targetSalary == employee.getSalary()) {
+                out[i++] = employee.getId();
+            }
+        }
+        return out;
+    }
+
+    private int[] getIdsofParameterDepartmentSalary(Department targetDepartment, int targetSalary) {
+        int counter = 0;
+        for (Employee employee : employeeBook) {
+            if (employee != null && employee.getDepartment() == targetDepartment && targetSalary == employee.getSalary()) {
+                counter++;
+            }
+        }
+        int[] out = new int[counter];
+        int i = 0;
+        for (Employee employee : employeeBook) {
+            if (employee != null && employee.getDepartment() == targetDepartment && targetSalary == employee.getSalary()) {
+                out[i++] = employee.getId();
+            }
+        }
+        return out;
+    }
+
+    private String getStringDepartmentStaff(Department department) {
+        String string = null;
+        for (int i = 0; i < employeeBook.length; i++) {
+            if (employeeBook[i] != null && employeeBook[i].getDepartment() == department)
+                string = getStringEmployeeWithoutDepartment(string, i);
+        }
+        return string;
+    }
+
+    private String getStringEmployeeWithoutDepartment(String string, int i) {
+        if (string == null) {
+            string = "[" + i + "] " + String.format("%s, зарплата %,dр %02dк, id=%d", employeeBook[i].getFullName(), employeeBook[i].getSalary() / 100, employeeBook[i].getSalary() % 100, employeeBook[i].getId());
+        } else {
+            string += "\n" + "[" + i + "] " + String.format("%s, зарплата %,dр %02dк, id=%d", employeeBook[i].getFullName(), employeeBook[i].getSalary() / 100, employeeBook[i].getSalary() % 100, employeeBook[i].getId());
+        }
+        return string;
     }
 }
