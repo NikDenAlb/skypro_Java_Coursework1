@@ -105,5 +105,13 @@ public class Main {
 
         System.out.println();
         employeeBook.printAlltDepartments();
+        System.out.println("-----------------------");
+        System.out.println(employeeBook);
+        System.out.println("Отдел 1");
+        System.out.println(Arrays.toString(employeeBook.whoEmployeesMaximumDepartmentSalary(DEP1)));
+        System.out.println("Отдел 5");
+        System.out.println(Arrays.toString(employeeBook.whoEmployeesMaximumDepartmentSalary(DEP5)));
+        System.out.println("Отдел 4");
+        System.out.println(Arrays.toString(employeeBook.whoEmployeesMaximumDepartmentSalary(DEP4)));
     }
 }

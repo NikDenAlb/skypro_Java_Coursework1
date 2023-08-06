@@ -100,6 +100,16 @@ public class EmployeeBook {
         return getIdsofParameterSalary(minimumSalary);
     }
 
+    public Employee[] whoEmployeesMinimumSalary() {
+        int minimumSalary = Integer.MAX_VALUE;
+        for (Employee employee : employeeBook) {
+            if (employee != null && minimumSalary > employee.getSalary()) {
+                minimumSalary = employee.getSalary();
+            }
+        }
+        return getEmployeesFromIds(getIdsofParameterSalary(minimumSalary));
+    }
+
     public int[] whoMaximumSalary() {
         int maximumSalary = 0;
         for (Employee employee : employeeBook) {
@@ -108,6 +118,16 @@ public class EmployeeBook {
             }
         }
         return getIdsofParameterSalary(maximumSalary);
+    }
+
+    public Employee[] whoEmployeesMaximumSalary() {
+        int maximumSalary = 0;
+        for (Employee employee : employeeBook) {
+            if (employee != null && maximumSalary < employee.getSalary()) {
+                maximumSalary = employee.getSalary();
+            }
+        }
+        return getEmployeesFromIds(getIdsofParameterSalary(maximumSalary));
     }
 
     public double averageSalary() {
@@ -148,6 +168,16 @@ public class EmployeeBook {
         return getIdsofParameterDepartmentSalary(department, minimumSalary);
     }
 
+    public Employee[] whoEmployeesMinimumDepartmentSalary(Department department) {
+        int minimumSalary = Integer.MAX_VALUE;
+        for (Employee employee : employeeBook) {
+            if (employee != null && employee.getDepartment() == department && minimumSalary > employee.getSalary()) {
+                minimumSalary = employee.getSalary();
+            }
+        }
+        return getEmployeesFromIds(getIdsofParameterDepartmentSalary(department, minimumSalary));
+    }
+
     public int[] whoMaximumDepartmentSalary(Department department) {
         int maximumSalary = 0;
         for (Employee employee : employeeBook) {
@@ -156,6 +186,16 @@ public class EmployeeBook {
             }
         }
         return getIdsofParameterDepartmentSalary(department, maximumSalary);
+    }
+
+    public Employee[] whoEmployeesMaximumDepartmentSalary(Department department) {
+        int maximumSalary = 0;
+        for (Employee employee : employeeBook) {
+            if (employee != null && employee.getDepartment() == department && maximumSalary < employee.getSalary()) {
+                maximumSalary = employee.getSalary();
+            }
+        }
+        return getEmployeesFromIds(getIdsofParameterDepartmentSalary(department, maximumSalary));
     }
 
     public int totalDepartmentSalary(Department department) {
@@ -320,5 +360,18 @@ public class EmployeeBook {
             string += "\n" + "[" + i + "] " + String.format("%s, зарплата %,dр %02dк, id=%d", employeeBook[i].getFullName(), employeeBook[i].getSalary() / 100, employeeBook[i].getSalary() % 100, employeeBook[i].getId());
         }
         return string;
+    }
+
+    private Employee[] getEmployeesFromIds(int[] id) {
+        Employee[] out = new Employee[id.length];
+        int index = 0;
+        for (int i : id) {
+            for (Employee employee : employeeBook) {
+                if (employee != null && employee.getId() == i) {
+                    out[index++] = employee;
+                }
+            }
+        }
+        return out;
     }
 }
